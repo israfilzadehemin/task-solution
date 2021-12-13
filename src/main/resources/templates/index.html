@@ -1,0 +1,91 @@
+<!-- saved from url=(0094)file:///C:/Users/oliver.stimmer/AppData/Roaming/Skype/My%20Skype%20Received%20Files/index.html -->
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=windows-1252">
+    <style>
+        * {
+            font-family: "Arial";
+        }
+    </style>
+</head>
+
+<body>
+<form method="post">
+
+    <h3
+            style="color: red; font-weight: bold"
+            th:if="${error != null}" th:text="${error}"></h3>
+
+    <h3
+            style="color: green; font-weight: bold"
+            th:if="${message != null}" th:text="${message}"></h3>
+
+    <h3>Please enter your name and pick the Sectors you are currently involved in.</h3>
+    <p>Name:</p>
+    <input
+            th:value="${user == null} ?'' : ${user.name} "
+            maxlength="100"
+            required
+            type="text"
+            name="name">
+
+    <p>Sectors:</p>
+    <select required name="selections" multiple="" style="width: 500px; height: 500px">
+        <th:block
+                th:each="sector: ${sectors}"
+                th:with="sectorIndex=${sectors.indexOf(sector) +1 }">
+            <option
+                    style="padding: 5px 0; "
+                    th:selected="${#lists.contains(ids, sector.id)}"
+                    th:value="${sector.id}"
+                    th:text=" ${sectorIndex} + '. ' + ${sector.name}">
+            </option>
+            <th:block
+                    th:with="categoryIndex=${sector.categories.indexOf(category) +1}"
+                    th:each="category: ${sector.categories}">
+                <option
+                        style="padding: 3px 15px;"
+                        th:selected="${#lists.contains(ids, category.id)}"
+                        th:value="${category.id}"
+                        th:text="${sectorIndex} + '.' +${categoryIndex} + '. ' + ${category.name}"></option>
+
+                <th:block
+                        th:with="subcategoryIndex=${category.subcategories.indexOf(subcategory) +1}"
+                        th:each="subcategory:${category.subcategories}">
+                    <option
+                            style="padding: 1px 30px;"
+                            th:selected="${#lists.contains(ids, subcategory.id)}"
+                            th:value="${subcategory.id}"
+                            th:text="${sectorIndex} + '.' +${categoryIndex} + '.' + ${subcategoryIndex} + '. ' + ${subcategory.name}">
+                    </option>
+
+                    <th:block
+                            th:with="productIndex=${subcategory.products.indexOf(product) +1}"
+                            th:each="product:${subcategory.products}">
+                        <option
+                                style="padding: 0 45px; "
+                                th:selected="${#lists.contains(ids, product.id)}"
+                                th:value="${product.id}"
+                                th:text="${sectorIndex} + '.' +${categoryIndex} + '.' + ${subcategoryIndex} + '.' + ${productIndex} + '. ' + ${product.name}">
+                        </option>
+                    </th:block>
+                </th:block>
+            </th:block>
+        </th:block>
+    </select>
+
+    <br>
+    <br>
+    <input required type="checkbox" name="agree" id="agree">
+    <label for="agree">Agree to terms</label>
+
+    <br>
+    <br>
+    <input name="submit" type="submit" value="Save">
+
+</form>
+
+</body>
+
+</html>
